@@ -1,0 +1,48 @@
+.fb-small{
+    display: none;
+}
+
+
+
+.media{
+	@include flex;
+	@include center;
+	
+}
+
+.media__one{
+	width: 50%;
+	@include flex;
+	@include center;
+	.FB{
+		width: 100%;
+		padding: 15px;
+	}
+}
+
+.sidebar, .sidebar-widget{
+	width: 100%;
+}
+
+@media screen and (max-width: 480px){
+    .fb-small{
+        display:block;
+    }
+    .fb-big{
+        display: none;
+    }
+
+	.media__one{
+		width: 100%;
+		margin: 10px;
+		.fb-page, .sidebar-widget{
+			width: 85%;
+			margin: 0 auto;
+			padding: 15px 0;	
+		}
+		.sidebar-widget{
+			width: 100%;
+		}
+	}
+	
+}

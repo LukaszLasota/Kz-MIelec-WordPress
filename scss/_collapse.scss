@@ -1,0 +1,114 @@
+
+.collapse{
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	position: relative;
+	
+	border: 2px solid black;
+	border-bottom: none;
+	
+	.collapse__head{	
+	  padding: 15px;
+	  font-size: 2.1rem;
+	  position: relative;
+	  cursor: pointer;
+	  text-align: center;
+	  text-transform: uppercase;
+	&:before {
+		border-right: 2px solid;
+		content: '';
+		display: block;
+		height: 15px;
+		margin-top: -8px;
+		margin-right: 20px;
+		position: absolute;
+		transform: rotate(135deg);
+		right: 15px;
+		top: 50%;
+		width: 0;
+		transition: transform 0.3s linear;
+	  }
+	  &:after {
+		border-right: 2px solid;
+		content: '';
+		display: block;
+		height: 15px;
+		margin-top: -8px;
+		margin-right: 20px;
+		position: absolute;
+		transform: rotate(-135deg);
+		right: 5px;
+		top: 50%;
+		width: 0;
+		transition: transform 0.3s linear;
+	  }	
+	  &.open{
+		border-bottom: 1px solid black;
+		&:before {
+			transform: rotate(45deg);
+		}
+		&:after{
+			transform: rotate(-45deg);
+		}    
+	 }
+	 .collapse__text{
+		 padding: 0 30px 0 15px;
+	 }
+  }
+	  
+	.collapse__body{
+		font-size: 1.8rem;
+	    padding:10px;
+		display:none;
+	}
+  }
+  .collapse--border{
+	border-bottom: 2px solid black;
+}
+
+
+.italic{
+	font-style: italic;
+}
+
+.collapse__body__h4
+{
+	margin: 0 auto;
+	width: 95%;
+	font-size: 2.0rem;
+	text-align: center;	
+	padding: 25px;
+}
+.collapse__body__paragraph{
+	margin: 0 auto;
+	width: 95%;
+	font-size: 1.9rem;
+	padding: 6px;
+}
+
+@media screen and (max-width: 800px)
+{
+	.collapse{
+	width: 90%;
+	}
+
+}
+
+
+@media screen and (max-width: 480px){
+.collapse{
+	margin: 0 auto;
+	width: 90%;
+	 
+  	.collapse__body{
+	font-size: 1.8rem;
+    padding: 0px;
+	}
+  }
+  
+
+.collapse__text{
+	font-size: 1.9rem;
+}
+}

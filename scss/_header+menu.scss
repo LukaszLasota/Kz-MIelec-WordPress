@@ -1,0 +1,443 @@
+
+.wrapper
+{
+	width: 60%;
+	margin: 0 auto;
+}
+
+.header{
+	@include flex;
+	@include center;
+	width: 100%;
+	margin: 0 auto;	
+}
+
+.menu{
+	width: 100%;
+	@include flex;
+}
+
+.logo{
+	width: 100%;
+	margin: 0 auto;
+	@include flex;
+	@include center;
+	padding: 10px 10px 0px 10px;
+	img
+	{
+	height: 120px;	
+	}
+}
+
+.nav
+{
+	width: 100%;
+	&::before
+	{
+	content:""; 
+  	display: block; 
+  	margin: 0 auto; 
+  	width: 87%; 
+  	padding-top: 10px; /* This creates some space between the element and the border. */
+  	border-bottom: 1px solid black; /* This creates the border. Replace black with whatever color you want. */
+	}
+	
+	&::after
+	{
+	content:""; 
+  	display: block; 
+  	margin: 0 auto; 
+  	width: 87%; 
+  	padding-top: 10px; /* This creates some space between the element and the border. */
+  	border-top: 1px solid black; /* This creates the border. Replace black with whatever color you want. */
+	}
+	
+	.nav__ul
+	{
+	width: 100%;
+	@include flex;
+	@include center;
+	list-style: none;
+	padding: 0;
+
+	}
+	.nav__li
+	{
+		width: 25%;
+		padding: 10px;
+		
+	}
+	.nav__li a
+	{
+		@include flex;
+		@include center;
+		text-align: center;
+		font-size: 1.8rem;
+		text-transform: uppercase;
+		color: black;
+		text-decoration: underline;
+	}
+}
+
+.banner{
+		@include flex;
+		@include center;
+	.banner_image{
+		position: relative;
+		width: 100%;
+		padding-top: 80px;
+		}
+	.banner_img-first{
+		width: 100%;
+		}
+	.banner_img-secend{
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 120%;
+	}
+}
+
+.black-circle{
+		width: 100%;
+		margin: 0 auto;
+		height: 60px;
+		width: 60px;
+		border-radius: 100%;
+		background: #000000;
+		@include flex;
+		@include center;
+		margin: 80px 20px 160px;
+}
+
+.section-head{
+		@include head;
+		margin: 30px 0 60px;
+		position: relative;
+    	z-index: 1;
+    
+    &::before {
+        border-top: 1px solid black;
+        content:"";
+        margin: 0 auto; /* this centers the line to the full width specified */
+        position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
+        top: 50%; left: 0; right: 0; bottom: 0;
+        width: 80%;
+        z-index: -1;
+	}
+	
+    span { 
+        /* to hide the lines from behind the text, you have to set the background color the same as the container */ 
+        background: #fff; 
+        padding: 0 10px; 
+    }
+
+}
+
+	.section-head-one{
+		@include head;
+		margin: 30px 0 60px;
+	}
+
+
+	.fixed{
+		display: none;
+		background: #FFF;
+		opacity: 0;
+		
+		animation: fadeIn 0.5s linear; 
+		z-index: 100;
+		width: 70%;
+		margin: 0 auto;
+		.nav{
+			&::before, &::after{
+				display: none;
+			}
+		}
+		.nav__ul{
+			padding: 0;
+		}
+		.nav__li{
+			width: 20%;
+			padding: 5px;
+			&--logo{
+				width: 20%;
+				margin: 0 auto;
+				padding: 0;
+				img{
+				margin: 0 auto;
+				height: 70px;	
+				}
+			}	
+			}
+		}
+	
+	@keyframes fadeIn {
+		from { opacity: 0;}
+		to { opacity: 1;}
+		}
+	
+	.is-fixed{
+		display: block;
+		opacity: 1;
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: unset;
+	}
+	
+
+	
+@media screen and (max-width: 1400px){
+	.wrapper
+	{
+		width: 80%;
+	}
+	.is-fixed{
+		width: 90%;
+	}
+
+	.logo{
+		padding: 5px 5px 0px 5px;
+		img
+		{
+		height: 90px;	
+		}
+	}
+
+	.banner{
+	.banner__paragraph{
+		font-size: 2.9rem;
+		letter-spacing: 4.5px;
+		letter-spacing: 130%;
+	}
+
+	.nav
+	{
+	.nav__li
+		{
+		padding: 10px;
+		}
+	}
+
+}
+}
+
+
+@media screen and (max-width: 1300px){
+
+	.wrapper
+	{
+		width: 85%;
+	}
+
+	.is-fixed{
+		width: 95%;
+	}
+	
+
+}
+
+
+@media screen and (max-width: 800px)
+{
+	.wrapper
+	{
+		width: 100%;
+	}
+	.banner{
+		margin-top: 80px;
+		.banner_image{
+			padding-top: 5px;
+		}
+		.banner_img-secend{
+			width: 100%;
+		}
+	}
+
+	.vb__item{
+		width: 50%;
+	}
+
+	.hamburger {
+		padding: 20px;
+	.line{
+		
+		width: 40px;
+		height: 3px;
+		background-color: #000000;
+		display: block;
+		margin: 10px auto;
+		-webkit-transition: all 0.3s ease-in-out;
+		-o-transition: all 0.3s ease-in-out;
+		transition: all 0.3s ease-in-out;
+	  }
+	  &:hover{
+		cursor: pointer;
+	  }
+}
+  
+  /* ONE */
+  
+  #hamburger-1.is-active
+  		{
+		.line:nth-child(2)
+		{
+		opacity: 0;
+  		} 
+  	.line:nth-child(1){
+	-webkit-transform: translateY(13px) rotate(45deg);
+	-ms-transform: translateY(13px) rotate(45deg);
+	-o-transform: translateY(13px) rotate(45deg);
+	transform: translateY(13px) rotate(45deg);
+  	}
+  	.line:nth-child(3){
+	-webkit-transform: translateY(-13px) rotate(-45deg);
+	-ms-transform: translateY(-13px) rotate(-45deg);
+	-o-transform: translateY(-13px) rotate(-45deg);
+	transform: translateY(-13px) rotate(-45deg);
+  	}
+}
+  
+  @keyframes smallbig{
+	0%, 100%{
+	  -webkit-transform: scale(1);
+	  -ms-transform: scale(1);
+	  -o-transform: scale(1);
+	  transform: scale(1);
+	}
+  
+	50%{
+	  -webkit-transform: scale(0);
+	  -ms-transform: scale(0);
+	  -o-transform: scale(0);
+	  transform: scale(0);
+	}
+  }
+	
+.menu{
+	justify-content: space-between;
+}
+
+.logo{
+	width: 15%;
+	margin: 0;
+	padding: 5px;
+	img
+	{
+	height: 80px;	
+	}
+}
+
+.three{
+	width: 12%;
+}
+
+.nav
+{
+  display: none;
+  &::before, &::after{
+	display: none;
+}
+}
+  
+  .nav.activ
+  {
+	  display: block;
+	  width: 100%;
+  }
+
+  .nav.activ .nav__ul
+  {
+	  display: block;
+	  width: 100%;
+	  padding: 0;
+
+  }
+
+  .nav.activ .nav__ul .nav__li
+  {
+	  margin: 0 auto;
+	  width: 100%;
+	  padding: 0;
+  }
+  
+  .nav.activ .nav__ul .nav__li a
+  {
+	  text-shadow: none;
+	  font-size: 1.7rem;
+	  width: 100%;
+	  padding: 18px 0;
+  }
+
+.fix{
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	
+	z-index: 100;
+	background: white;
+	width: 100%;
+}
+
+.banner__paragraph{
+	font-size: 2.9rem;
+	letter-spacing: 4.0px;
+	width: 90%;
+	margin: 0 auto;
+	padding: 30px 0;
+}
+}
+
+
+@media screen and (max-width: 480px)
+{
+
+	.banner{
+	.banner_image{
+		padding-top: 5px;
+	}
+	.banner_img-secend{
+		display: none;
+	}
+}
+
+.logo{
+	width: 25%;
+	margin: 0;
+	padding: 5px 0 0 0;
+	img
+	{
+	height: 65px;	
+	}
+}
+
+.three{
+	width: 25%;
+}
+
+.hamburger {
+	padding: 15px;
+}
+
+.banner__paragraph{
+	display: none;
+}
+
+.black-circle{
+	margin: 50px 20px 100px;
+}
+
+.section-head{
+	margin: 30px 0 60px;
+	font-size: 2.8rem;
+	letter-spacing: 1.1px;
+	&::before {
+	display: none;
+	}
+}
+
+}
