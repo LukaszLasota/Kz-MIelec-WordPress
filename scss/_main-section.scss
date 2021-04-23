@@ -20,8 +20,14 @@
 		margin: 5px;
 	}
 	.vb__paragraph--one{
+		p{
+			text-align: left;
+		width: 100%;
+		font-size: 2.0rem;
+		}
 		text-align: left;
 		width: 100%;
+		font-size: 2.0rem;
 	}
 	.vb__image{
 		position: relative;

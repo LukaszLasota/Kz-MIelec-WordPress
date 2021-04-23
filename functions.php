@@ -37,21 +37,36 @@ function kzmielec_features(){
 add_action( 'after_setup_theme', 'kzmielec_features');
 
 
-// function kindergarten_post_types(){
-//     register_post_type('banner', array(
-//         'supports' => array('title', 'editor', 'excerpt'),
-//         'show_in_rest' => true,
-//         'has_archive' => true,
-//         'public'=> true,
-//         'labels' => array(
-//             'name'=> 'Banner strona główna',
-//             'add_new_item' => 'Dodaj nowy banner',
-//             'edit_item' => 'Edytuj banner',
-//             'all_items' => 'Wszystkie bannery',
-//             'singular_name' => 'Banner',
-//         ),
-//         'menu_icon' => 'dashicons-format-gallery',
-//     ));
+function kzmielec_post_types(){
+    // register_post_type('visits', array(
+    //     'supports' => array('title', 'editor', 'excerpt', 'thumbnail'),
+    //     'show_in_rest' => true,
+    //     'has_archive' => true,
+    //     'public'=> true,
+    //     'labels' => array(
+    //         'name'=> 'Wizyty strona główna',
+    //         'add_new_item' => 'Dodaj nową wizytę',
+    //         'edit_item' => 'Edytuj wizytę',
+    //         'all_items' => 'Wszystkie wizyty',
+    //         'singular_name' => 'Wizyty',
+    //     ),
+    //     'menu_icon' => 'dashicons-universal-access-alt',
+    // ));
+
+    register_post_type('zaplanuj-wizyte', array(
+        'supports' => array('title', 'editor', 'excerpt', 'thumbnail'),
+        'show_in_rest' => true,
+        'has_archive' => true,
+        'public'=> true,
+        'labels' => array(
+            'name'=> 'Wizyty strona główna',
+            'add_new_item' => 'Dodaj nową wizytę',
+            'edit_item' => 'Edytuj wizytę',
+            'all_items' => 'Wszystkie wizyty',
+            'singular_name' => 'Wizyty',
+        ),
+        'menu_icon' => 'dashicons-universal-access-alt',
+    ));
     
     //Nasze-atuty typ postu, Po każdym dodaniu nowego rodzaju postu trzeba odświeżyć permalinki
     // register_post_type('Nasze-atuty', array(
@@ -196,9 +211,9 @@ add_action( 'after_setup_theme', 'kzmielec_features');
 //   'menu_icon' => 'dashicons-heart'
 // ));
   
-// };
+};
 
-// add_action('init', 'kindergarten_post_types');
+ add_action('init', 'kzmielec_post_types');
 
 
 
@@ -207,8 +222,8 @@ if (function_exists('register_sidebar'))
 {
     // Define Sidebar Widget Area 1
     register_sidebar(array(
-        'name' => __('Widget Area 1', 'html5blank'),
-        'description' => __('Description for this widget-area...', 'html5blank'),
+        'name' => __('Widget Area 1', 'kzmielec'),
+        'description' => __('Description for this widget-area...', 'kzmielec'),
         'id' => 'widget-area-1',
         'before_widget' => '<div id="%1$s" class="%2$s">',
         'after_widget' => '</div>',
@@ -218,8 +233,8 @@ if (function_exists('register_sidebar'))
 
     // Define Sidebar Widget Area 2
     register_sidebar(array(
-        'name' => __('Widget Area 2', 'html5blank'),
-        'description' => __('Description for this widget-area...', 'html5blank'),
+        'name' => __('Widget Area 2', 'kzmielec'),
+        'description' => __('Description for this widget-area...', 'kzmielec'),
         'id' => 'widget-area-2',
         'before_widget' => '<div id="%1$s" class="%2$s">',
         'after_widget' => '</div>',
@@ -227,3 +242,126 @@ if (function_exists('register_sidebar'))
         'after_title' => '</h3>'
     ));
 }
+
+
+
+
+/*
+ * Function creates post duplicate as a draft and redirects then to the edit post screen
+ */
+function rd_duplicate_post_as_draft(){
+	global $wpdb;
+	if (! ( isset( $_GET['post']) || isset( $_POST['post'])  || ( isset($_REQUEST['action']) && 'rd_duplicate_post_as_draft' == $_REQUEST['action'] ) ) ) {
+		wp_die('No post to duplicate has been supplied!');
+	}
+ 
+	/*
+	 * Nonce verification
+	 */
+	if ( !isset( $_GET['duplicate_nonce'] ) || !wp_verify_nonce( $_GET['duplicate_nonce'], basename( __FILE__ ) ) )
+		return;
+ 
+	/*
+	 * get the original post id
+	 */
+	$post_id = (isset($_GET['post']) ? absint( $_GET['post'] ) : absint( $_POST['post'] ) );
+	/*
+	 * and all the original post data then
+	 */
+	$post = get_post( $post_id );
+ 
+	/*
+	 * if you don't want current user to be the new post author,
+	 * then change next couple of lines to this: $new_post_author = $post->post_author;
+	 */
+	$current_user = wp_get_current_user();
+	$new_post_author = $current_user->ID;
+ 
+	/*
+	 * if post data exists, create the post duplicate
+	 */
+	if (isset( $post ) && $post != null) {
+ 
+		/*
+		 * new post data array
+		 */
+		$args = array(
+			'comment_status' => $post->comment_status,
+			'ping_status'    => $post->ping_status,
+			'post_author'    => $new_post_author,
+			'post_content'   => $post->post_content,
+			'post_excerpt'   => $post->post_excerpt,
+			'post_name'      => $post->post_name,
+			'post_parent'    => $post->post_parent,
+			'post_password'  => $post->post_password,
+			'post_status'    => 'draft',
+			'post_title'     => $post->post_title,
+			'post_type'      => $post->post_type,
+			'to_ping'        => $post->to_ping,
+			'menu_order'     => $post->menu_order
+		);
+ 
+		/*
+		 * insert the post by wp_insert_post() function
+		 */
+		$new_post_id = wp_insert_post( $args );
+ 
+		/*
+		 * get all current post terms ad set them to the new post draft
+		 */
+		$taxonomies = get_object_taxonomies($post->post_type); // returns array of taxonomy names for post type, ex array("category", "post_tag");
+		foreach ($taxonomies as $taxonomy) {
+			$post_terms = wp_get_object_terms($post_id, $taxonomy, array('fields' => 'slugs'));
+			wp_set_object_terms($new_post_id, $post_terms, $taxonomy, false);
+		}
+ 
+		/*
+		 * duplicate all post meta just in two SQL queries
+		 */
+		$post_meta_infos = $wpdb->get_results("SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE post_id=$post_id");
+		if (count($post_meta_infos)!=0) {
+			$sql_query = "INSERT INTO $wpdb->postmeta (post_id, meta_key, meta_value) ";
+			foreach ($post_meta_infos as $meta_info) {
+				$meta_key = $meta_info->meta_key;
+				if( $meta_key == '_wp_old_slug' ) continue;
+				$meta_value = addslashes($meta_info->meta_value);
+				$sql_query_sel[]= "SELECT $new_post_id, '$meta_key', '$meta_value'";
+			}
+			$sql_query.= implode(" UNION ALL ", $sql_query_sel);
+			$wpdb->query($sql_query);
+		}
+ 
+ 
+		/*
+		 * finally, redirect to the edit post screen for the new draft
+		 */
+		wp_redirect( admin_url( 'post.php?action=edit&post=' . $new_post_id ) );
+		exit;
+	} else {
+		wp_die('Post creation failed, could not find original post: ' . $post_id);
+	}
+}
+add_action( 'admin_action_rd_duplicate_post_as_draft', 'rd_duplicate_post_as_draft' );
+ 
+/*
+ * Add the duplicate link to action list for post_row_actions
+ */
+function rd_duplicate_post_link( $actions, $post ) {
+	if (current_user_can('edit_posts')) {
+		$actions['duplicate'] = '<a href="' . wp_nonce_url('admin.php?action=rd_duplicate_post_as_draft&post=' . $post->ID, basename(__FILE__), 'duplicate_nonce' ) . '" title="Duplicate this item" rel="permalink">Kopiuj</a>';
+	}
+	return $actions;
+}
+ 
+add_filter( 'post_row_actions', 'rd_duplicate_post_link', 10, 2 );
+
+
+function kzmielec_adjust_queries($query){
+   
+    if(!is_admin() AND is_post_type_archive('zaplanuj-wizyte') AND $query-> is_main_query() ){
+        $query->set('order', 'ASC');
+    }
+
+}
+
+add_action( 'pre_get_posts', 'kzmielec_adjust_queries' );
