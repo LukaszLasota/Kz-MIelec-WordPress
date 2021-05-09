@@ -1,5 +1,3 @@
-
-
 import $ from 'jquery';
 
 // Customize Settings: For more information visit www.blogsynthesis.com/plugins/jquery-smooth-scroll/
